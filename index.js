@@ -1,76 +1,87 @@
 let startTime
 let interval
+let pausedDuration = 0 // Track total time paused
+let lastPauseTime // Time when last paused
 let running = false
 
-function toggleTheme() {
-  const body = document.body
-  const themeButton = document.getElementById('themeToggle')
-  if (body.classList.contains('dark')) {
-    body.classList.remove('dark')
-    body.style.color = '#333'
-    body.style.backgroundColor = '#FAFAFA'
-    themeButton.textContent = '🌙'
-  } else {
-    body.classList.add('dark')
-    body.style.color = '#FAFAFA'
-    body.style.backgroundColor = '#333'
-    themeButton.textContent = '☀️'
-  }
+function startTimer() {
+  startTime = Date.now()
+  interval = setInterval(updateDuration, 1000)
+  running = true
+  document.getElementById('startBtn').disabled = true
+  document.getElementById('pauseResumeBtn').disabled = false
+  document.getElementById('endBtn').disabled = false
+  appendToLog(`Started at ${new Date(startTime).toLocaleTimeString()}`)
 }
 
-function toggleTimer() {
+function togglePauseResume() {
   if (running) {
     clearInterval(interval)
-    document.getElementById('startStopBtn').textContent = 'Start'
-    let endTime = new Date()
-    let duration = (endTime - startTime) / 1000
-    document.getElementById(
-      'duration'
-    ).textContent = `Duration: ${duration.toFixed(2)} seconds`
+    lastPauseTime = Date.now()
+    appendToLog(
+      `Paused at ${new Date(
+        lastPauseTime
+      ).toLocaleTimeString()} - Duration since start: ${getFormattedDuration(
+        lastPauseTime - startTime - pausedDuration
+      )}`
+    )
+    document.getElementById('pauseResumeBtn').textContent = 'Resume'
     running = false
-
-    // Log the times
-    const logDiv = document.getElementById('log')
-    const minutes = Math.floor(duration / 60)
-    const seconds = duration % 60
-    const logText = `${startTime.toDateString()} - ${startTime.toLocaleTimeString()} - ${endTime.toLocaleTimeString()} - ${minutes} minutes and ${seconds.toFixed(
-      2
-    )} seconds<br>`
-    logDiv.innerHTML += logText
   } else {
-    document.getElementById('progressBar').style.width = '0%'
-    document.getElementById('startStopBtn').textContent = 'Stop'
-    startTime = new Date()
+    const resumeTime = Date.now()
+    pausedDuration += resumeTime - lastPauseTime
+    interval = setInterval(updateDuration, 1000)
+    appendToLog(
+      `Resumed at ${new Date(
+        resumeTime
+      ).toLocaleTimeString()} - Duration since start: ${getFormattedDuration(
+        resumeTime - startTime - pausedDuration
+      )}`
+    )
+    document.getElementById('pauseResumeBtn').textContent = 'Pause'
     running = true
-    interval = setInterval(function () {
-      let currentTime = new Date()
-      let elapsed = (currentTime - startTime) / 1000
-      let widthPercentage = ((elapsed % 60) / 60) * 100
-      document.getElementById('progressBar').style.width = `${widthPercentage}%`
-      document.getElementById(
-        'duration'
-      ).textContent = `Duration: ${elapsed.toFixed(2)} seconds`
-    }, 100)
   }
 }
 
-function logTime(start, end) {
+function endTimer() {
+  clearInterval(interval)
+  const endTime = Date.now()
+  const totalDuration = endTime - startTime - pausedDuration
+  appendToLog(
+    `Ended at ${new Date(
+      endTime
+    ).toLocaleTimeString()} - Total duration: ${getFormattedDuration(
+      totalDuration
+    )}`
+  )
+
+  document.getElementById('duration').textContent = 'Duration: 0 seconds'
+  document.getElementById('progressBar').style.width = '0%'
+  document.getElementById('startBtn').disabled = false
+  document.getElementById('pauseResumeBtn').disabled = true
+  document.getElementById('endBtn').disabled = true
+  document.getElementById('pauseResumeBtn').textContent = 'Pause'
+
+  running = false
+  pausedDuration = 0
+}
+
+function updateDuration() {
+  const currentTime = Date.now()
+  const elapsedTime = currentTime - startTime - pausedDuration
+  document.getElementById('duration').textContent =
+    'Duration: ' + getFormattedDuration(elapsedTime)
+  document.getElementById('progressBar').style.width = elapsedTime / 1000 + '%'
+}
+
+function getFormattedDuration(milliseconds) {
+  const durationSeconds = (milliseconds / 1000).toFixed(0)
+  return `${durationSeconds} seconds`
+}
+
+function appendToLog(message) {
   const logElement = document.getElementById('log')
-  const elapsedTime = end - start
-  const durationMinutes = Math.floor(elapsedTime / 60000)
-  const durationSeconds = ((elapsedTime % 60000) / 1000).toFixed(0)
-
-  const startDate = new Date(start)
-  const endDate = new Date(end)
-
-  const formattedStart = startDate.toLocaleTimeString()
-  const formattedEnd = endDate.toLocaleTimeString()
-  const formattedDate = startDate.toLocaleDateString()
-
-  // Create a new list item and set its text content
   const listItem = document.createElement('li')
-  listItem.textContent = `${formattedDate} - ${formattedStart} - ${formattedEnd} - ${durationMinutes} minutes and ${durationSeconds} seconds`
-
-  // Append the list item to the log
+  listItem.textContent = message
   logElement.appendChild(listItem)
 }
