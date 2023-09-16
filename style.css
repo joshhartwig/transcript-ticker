@@ -1,0 +1,58 @@
+body {
+  font-family: 'Roboto', sans-serif;
+  transition: background-color 0.3s;
+  color: #FAFAFA; /* Dark mode text color */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #333; /* Dark mode background color */
+  padding: 20px;
+  margin: 0;
+}
+
+#container {
+  text-align: center;
+  max-width: 500px;
+  width: 100%;
+}
+
+#themeToggle {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+h1 {
+  font-size: 2em;
+  margin-bottom: 20px;
+}
+
+#progressBar, #startStopBtn, #duration {
+  margin-bottom: 15px;
+}
+
+#progressBar {
+  width: 100%;
+  height: 30px;
+  background-color: #9E9E9E;
+  transition: width 0.1s;
+  border-radius: 4px; /* Rounded look */
+}
+
+button {
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  background-color: #9E9E9E;
+  color: #333; /* Dark mode button text */
+  border-radius: 5px;
+}
+
+#log {
+  text-align: left;
+}

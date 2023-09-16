@@ -4,15 +4,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+  <script src="index.js"></script>
   <title>Document</title>
 </head>
-<body>
-  <header>
-    <div>Transcript Ticker</div>
-  </header>
-  <main>
-
-  </main>
+<button id="themeToggle" onclick="toggleTheme()">☀️</button>
+    <div id="container">
+        <h1>Transcript Ticker</h1> <!-- Title -->
+        <button id="startStopBtn" onclick="toggleTimer()">Start</button>
+        <div id="duration">Duration: 0 seconds</div>
+        <div id="progressBar"></div>
+        <ul id="log"></ul>
+    </div>
   
 </body>
 </html>
