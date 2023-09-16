@@ -1,4 +1,4 @@
-# Project Title
+# Trina's Time Tracker
 
 Trina's time tracker
 
