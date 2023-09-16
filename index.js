@@ -69,14 +69,29 @@ function endTimer() {
 function updateDuration() {
   const currentTime = Date.now()
   const elapsedTime = currentTime - startTime - pausedDuration
+
+  // Calculate progress percentage
+  const progressPercentage = (elapsedTime / 1000) % 100 // Reset after reaching 100%
+
   document.getElementById('duration').textContent =
     'Duration: ' + getFormattedDuration(elapsedTime)
-  document.getElementById('progressBar').style.width = elapsedTime / 1000 + '%'
+  document.getElementById('progressBar').style.width = progressPercentage + '%'
 }
 
 function getFormattedDuration(milliseconds) {
-  const durationSeconds = (milliseconds / 1000).toFixed(0)
-  return `${durationSeconds} seconds`
+  let totalSeconds = Math.floor(milliseconds / 1000)
+  const hours = Math.floor(totalSeconds / 3600)
+  totalSeconds %= 3600
+  const minutes = Math.floor(totalSeconds / 60)
+  const seconds = totalSeconds % 60
+
+  if (hours > 0) {
+    return `${hours} hours ${minutes} minutes ${seconds} seconds`
+  } else if (minutes > 0) {
+    return `${minutes} minutes ${seconds} seconds`
+  } else {
+    return `${seconds} seconds`
+  }
 }
 
 function appendToLog(message) {
@@ -84,4 +99,27 @@ function appendToLog(message) {
   const listItem = document.createElement('li')
   listItem.textContent = message
   logElement.appendChild(listItem)
+}
+
+function logToCSV() {
+  const logElement = document.getElementById('log')
+  const items = logElement.getElementsByTagName('li')
+  let csv = 'Log\n' // Column header
+  for (let item of items) {
+    csv += item.textContent + '\n'
+  }
+  return csv
+}
+
+function downloadCSV() {
+  const csv = logToCSV()
+  const blob = new Blob([csv], { type: 'text/csv' })
+  const url = window.URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.setAttribute('hidden', '')
+  a.setAttribute('href', url)
+  a.setAttribute('download', 'log.csv')
+  document.body.appendChild(a)
+  a.click()
+  document.body.removeChild(a)
 }
