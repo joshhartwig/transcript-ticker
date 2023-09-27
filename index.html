@@ -11,14 +11,29 @@
 </head>
 <button id="themeToggle" onclick="toggleTheme()">☀️</button>
     <div id="container">
-      <img src="./reporter.png" class="headerImage" alt="">
-      <h1><span id="trina">Trina's</span> Transcript Ticker</h1>
-      <button id="startBtn" onclick="startTimer()">Start</button>
-      <button id="pauseResumeBtn" onclick="togglePauseResume()" disabled>Pause</button>
-      <button id="endBtn" onclick="endTimer()" disabled>End</button>
-      <div id="duration">Duration: 0 seconds</div>
-      <div id="progressBar"></div>
-      <ul id="log"></ul>
+      <div class="header">
+        <img src="./reporter.png" class="headerImage" alt="someone with crazy hair">
+        <h1><span id="trina">Trina's</span> Transcript Ticker</h1>
+      </div>
+      <div class="main">
+        <div class="start-container">
+          <button id="startBtn" onclick="startTimer()">Start</button>
+        </div>
+
+        <div class="progress-container">
+          <div id="duration">Duration: 0 seconds</div>
+          <div id="progressBar"></div>
+        </div>
+
+        <div class="pauseres-container">
+          <button id="pauseResumeBtn" onclick="togglePauseResume()" disabled>Pause</button>
+          <button id="endBtn" onclick="endTimer()" disabled>End</button>
+        </div>
+        
+        <div class="log-container">
+          <ul id="log"></ul>
+        </div>
+      </div>
     </div>
 </body>
 </html>

@@ -1,8 +1,6 @@
 # Trina's Time Tracker
 
-Trina's time tracker
-
-## Description
+[Trina's time tracker](https://joshhartwig.github.io/transcript-ticker/)
 
 This is a simple web app for a friend of my wife who is a court reporter. She had a frequent need to track the time and remove the duration of breaks.
 
