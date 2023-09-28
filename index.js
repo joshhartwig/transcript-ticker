@@ -1,11 +1,13 @@
 let startTime
 let interval
-let pausedDuration = 0 // Track total time paused
-let lastPauseTime // Time when last paused
+let pausedDuration = 0
+let lastPauseTime
 let running = false
 
 function startTimer() {
   startTime = Date.now()
+  document.getElementById('startTime').textContent =
+    'Start Time: ' + new Date(startTime).toLocaleTimeString()
   interval = setInterval(updateDuration, 1000)
   running = true
   document.getElementById('startBtn').disabled = true
@@ -55,8 +57,8 @@ function endTimer() {
     )}`
   )
 
-  document.getElementById('duration').textContent = 'Duration: 0 seconds'
   document.getElementById('progressBar').style.width = '0%'
+  document.getElementById('duration').textContent = ''
   document.getElementById('startBtn').disabled = false
   document.getElementById('pauseResumeBtn').disabled = true
   document.getElementById('endBtn').disabled = true
@@ -69,12 +71,10 @@ function endTimer() {
 function updateDuration() {
   const currentTime = Date.now()
   const elapsedTime = currentTime - startTime - pausedDuration
-
-  // Calculate progress percentage
-  const progressPercentage = (elapsedTime / 1000) % 100 // Reset after reaching 100%
+  const progressPercentage = (elapsedTime / 1000) % 100
 
   document.getElementById('duration').textContent =
-    'Duration: ' + getFormattedDuration(elapsedTime)
+    getFormattedDuration(elapsedTime)
   document.getElementById('progressBar').style.width = progressPercentage + '%'
 }
 
@@ -86,11 +86,11 @@ function getFormattedDuration(milliseconds) {
   const seconds = totalSeconds % 60
 
   if (hours > 0) {
-    return `${hours} hours ${minutes} minutes ${seconds} seconds`
+    return `${hours}h ${minutes}m ${seconds}s`
   } else if (minutes > 0) {
-    return `${minutes} minutes ${seconds} seconds`
+    return `${minutes}m ${seconds}s`
   } else {
-    return `${seconds} seconds`
+    return `${seconds}s`
   }
 }
 
@@ -101,25 +101,13 @@ function appendToLog(message) {
   logElement.appendChild(listItem)
 }
 
-function logToCSV() {
-  const logElement = document.getElementById('log')
-  const items = logElement.getElementsByTagName('li')
-  let csv = 'Log\n' // Column header
-  for (let item of items) {
-    csv += item.textContent + '\n'
+function toggleTheme() {
+  const currentTheme = document.body.getAttribute('data-theme')
+  if (currentTheme === 'dark') {
+    document.body.setAttribute('data-theme', 'light')
+    document.getElementById('themeToggle').textContent = '☀️'
+  } else {
+    document.body.setAttribute('data-theme', 'dark')
+    document.getElementById('themeToggle').textContent = '🌙'
   }
-  return csv
-}
-
-function downloadCSV() {
-  const csv = logToCSV()
-  const blob = new Blob([csv], { type: 'text/csv' })
-  const url = window.URL.createObjectURL(blob)
-  const a = document.createElement('a')
-  a.setAttribute('hidden', '')
-  a.setAttribute('href', url)
-  a.setAttribute('download', 'log.csv')
-  document.body.appendChild(a)
-  a.click()
-  document.body.removeChild(a)
 }

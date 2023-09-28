@@ -1,39 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
-  <script src="index.js"></script>
-  <title>Document</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+    <script src="index.js"></script>
+    <title>Document</title>
 </head>
-<button id="themeToggle" onclick="toggleTheme()">☀️</button>
+<body data-theme="light">
+    <button id="themeToggle" onclick="toggleTheme()">☀️</button>
     <div id="container">
-      <div class="header">
-        <img src="./reporter.png" class="headerImage" alt="someone with crazy hair">
-        <h1><span id="trina">Trina's</span> Transcript Ticker</h1>
-      </div>
-      <div class="main">
-        <div class="start-container">
-          <button id="startBtn" onclick="startTimer()">Start</button>
+        <div class="header">
+            <h1><span id="trina">Trina's</span> Transcript Ticker</h1>
+            <img src="./reporter.png" class="headerImage" alt="someone with crazy hair">
         </div>
-
-        <div class="progress-container">
-          <div id="duration">Duration: 0 seconds</div>
-          <div id="progressBar"></div>
+        <div class="main">
+            <div class="start-container">
+                <button id="startBtn" onclick="startTimer()">Start</button>
+            </div>
+            <div class="info-container">
+                <span id="startTime">Start Time</span>
+                <!-- Duration text removed from here -->
+            </div>
+            <div class="progress-container">
+                <div id="progressBar">
+                    <!-- Duration added inside progressBar -->
+                    <span id="duration" style="color: white;"></span>
+                </div>
+                <span id="progressStatus"></span>
+            </div>
+            <div class="pauseres-container">
+                <button id="pauseResumeBtn" onclick="togglePauseResume()" disabled>Pause</button>
+                <button id="endBtn" onclick="endTimer()" disabled>End</button>
+            </div>
+            <div class="log-container">
+                <ul id="log"></ul>
+            </div>
         </div>
-
-        <div class="pauseres-container">
-          <button id="pauseResumeBtn" onclick="togglePauseResume()" disabled>Pause</button>
-          <button id="endBtn" onclick="endTimer()" disabled>End</button>
-        </div>
-        
-        <div class="log-container">
-          <ul id="log"></ul>
-        </div>
-      </div>
     </div>
 </body>
 </html>
